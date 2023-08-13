@@ -17,6 +17,12 @@ namespace Web2.Services
             _mapper = mapper;
         }
 
+        public async Task<List<OrderDTO>> GetAllOrders()
+        {
+            var orders = await _unitOfWork.Orders.GetAll(null, x => x.OrderByDescending(y => y.OrderTime), new List<string> { "Items" });
+            return _mapper.Map<List<OrderDTO>>(orders);
+        }
+
         public async Task<List<UserDTO>> GetBuyers()
         {
             var users = await _unitOfWork.Users.GetAll(x => x.Type == UserType.Buyer);

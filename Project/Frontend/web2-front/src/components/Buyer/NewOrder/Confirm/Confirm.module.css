@@ -1,0 +1,14 @@
+.wrap {
+    display: flex;
+    justify-content: space-between;
+    color: blue;
+  }
+  
+  .wrapRight {
+    margin-left: auto;
+    color: blue;
+  }
+  
+  .wrapLeft {
+    margin-right: auto;
+  }

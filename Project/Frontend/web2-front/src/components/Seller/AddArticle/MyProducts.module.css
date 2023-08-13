@@ -8,3 +8,29 @@
     width: 250px;
     max-width: 250px;
   }
+
+  .image {
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    object-fit: contain;
+    margin-bottom: 5px;
+    margin-right: 10px;
+  }
+  
+.wrap {
+    display: flex;
+    justify-content: space-between;
+    color: blue;
+  }
+  
+  .wrapRight {
+    margin-left: auto;
+    color: blue;
+  }
+  
+  .wrapLeft {
+    margin-right: auto;
+  }

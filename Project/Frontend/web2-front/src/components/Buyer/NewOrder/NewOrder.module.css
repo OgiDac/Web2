@@ -1,0 +1,10 @@
+.card {
+    margin-right: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    border: 1px solid #000;
+    height: 350px;
+    max-height: 350px;
+    width: 300px;
+    max-width: 300px;
+  }

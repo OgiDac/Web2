@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using Web2.Config;
+using Web2.ExceptionHandler;
 using Web2.Interfaces;
 using Web2.Interfaces.IServices;
 using Web2.Repository;
@@ -56,10 +57,12 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<DbContext, StoreDbContext>();
+builder.Services.AddScoped<ExceptionMiddleware>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<ISellerService, SellerService>();
+builder.Services.AddScoped<IBuyerService, BuyerService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 
@@ -102,6 +105,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("All");
+app.UseMiddleware<ExceptionMiddleware>();
+
 
 app.UseHttpsRedirection();
 

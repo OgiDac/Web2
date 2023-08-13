@@ -2,8 +2,10 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 import classes from './Login.module.css'
+import AlertContext from "../../contexts/AlertContext";
 
 const Login = () => {
+  const alertContex = useContext(AlertContext)
 
     const [loginForm, setLoginForm] = useState({
         email:"",
@@ -15,7 +17,9 @@ const Login = () => {
         e.preventDefault();
     
         if (!loginForm.email || !loginForm.password) {
-          alert("All fields required.");
+          alertContex.setOpen(true)
+        alertContex.setMessage("All fields required.");
+        alertContex.setSeverity("info")
           return;
         }
         await context.onLogin(loginForm);
@@ -31,7 +35,6 @@ const Login = () => {
               id="email"
               value={loginForm.email}
               onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
-              required
               className={classes.input}
             />
           </div>
@@ -42,7 +45,6 @@ const Login = () => {
               id="password"
               value={loginForm.password}
               onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
-              required
               className={classes.input}
             />
           </div>

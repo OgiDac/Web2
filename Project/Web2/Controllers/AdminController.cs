@@ -55,5 +55,13 @@ namespace Web2.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Administrator")]
+        [HttpGet("orders")]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            var orders = await _adminService.GetAllOrders();
+            return Ok(orders);
+        }
+
     }
 }

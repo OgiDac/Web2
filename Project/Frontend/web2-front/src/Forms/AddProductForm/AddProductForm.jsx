@@ -11,11 +11,13 @@ import {
   } from "@mui/material";
   
   import classes from "../Forms.module.css";
-  import { useState } from "react";
+  import { useContext, useState } from "react";
   import sellerService from "../../services/sellerService";
 
+  import AlertContext from "../../contexts/AlertContext";
 
 const AddProductForm = ({ updateProducts,setOpen}) => {
+  const alertContex = useContext(AlertContext)
     const [data, setData] = useState({
         name: "",
         description: "",
@@ -44,17 +46,21 @@ const AddProductForm = ({ updateProducts,setOpen}) => {
     }
 
     const handleSave = (e) => {
+      alertContex.setSeverity('info');
         if (!data.name || !data.price || !data.description || !data.amount) {
-            alert("All fields are required");
+          alertContex.setOpen(true);
+          alertContex.setMessage("All fields are required");
             return;
           }
-          if (!data.amount || data.amount < 0 || !parseInt(data.amount) || !Number.isInteger(data.amount)) {
-            alert("Amount is integer and must be over 0.");
+          if (!data.amount || data.amount < 0 || !parseInt(data.amount)) {
+            alertContex.setOpen(true);
+          alertContex.setMessage("Amount is integer and must be over 0.");
             return;
           }
       
           if (!data.price || data.price < 0 || !parseFloat(data.price)) {
-            alert("Price is floater and must be over 0.");
+            alertContex.setOpen(true);
+          alertContex.setMessage("Price is floater and must be over 0.");
             return;
           }
 
@@ -64,6 +70,7 @@ const AddProductForm = ({ updateProducts,setOpen}) => {
       }
 
     sellerService.postProduct(formData).then((res) => res && updateProducts());
+    setOpen(false);
 
     }
 

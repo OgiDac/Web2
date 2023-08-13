@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Web2.DTOs;
+using Web2.ExceptionHandler;
 using Web2.Interfaces;
 using Web2.Interfaces.IServices;
 using Web2.Models;
@@ -30,6 +31,14 @@ namespace Web2.Services
                 throw new Exception("Ne moze admin");
             }
             var user = _mapper.Map<User>(registerDTO);
+            if (registerDTO.ImageFile != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    registerDTO.ImageFile.CopyTo(ms);
+                    user.Image = ms.ToArray();
+                }
+            }
             await _unitOfWork.Users.Insert(user);
             await _unitOfWork.Save();
         }
@@ -58,10 +67,10 @@ namespace Web2.Services
         {
             var user = await _unitOfWork.Users.Get(x => x.Email == loginDTO.Email);
             if (user == null)
-                throw new Exception($"Incorrect email. Try again.");
+                throw new MyException($"Incorrect email. Try again.");
 
             if (!BC.BCrypt.Verify(loginDTO.Password, user.Password))
-                throw new Exception("Invalid password");
+                throw new MyException("Invalid password");
 
             if (user.Type == UserType.Seller)
             {

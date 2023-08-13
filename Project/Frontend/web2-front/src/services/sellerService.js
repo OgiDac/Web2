@@ -43,7 +43,7 @@ const getProduct = async (id) => {
 
 const putProduct = async (data) => {
   try {
-    await api.put("seller/products", data, { headers: { "Content-Type":"multipart/form-data" }});
+    await api.put("seller", data, { headers: { "Content-Type":"multipart/form-data" }});
     return true;
   } catch (e) {
     alert(e.response.data.Exception);
@@ -63,7 +63,7 @@ const postProduct = async (data) => {
 
 const deleteProduct = async (id) => {
   try {
-   await api.delete("seller/products/" + id);
+   await api.delete("seller/" + id);
    return true;
   } catch (e) {
     alert(e.response.data.Exception);

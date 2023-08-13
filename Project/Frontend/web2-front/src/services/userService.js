@@ -11,7 +11,6 @@ const register = async (data) => {
     }
     catch(e) {
         console.log(e.response.data)
-        alert(e.message);
         return false;
     }
 }

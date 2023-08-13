@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import classes from "../Register/Register.module.css";
 import { useNavigate } from "react-router-dom";
 import userService from '../../services/userService';
 
+import AlertContext from "../../contexts/AlertContext";
 
 const Register = () => {
   const navigate = useNavigate();
+  const alertContex = useContext(AlertContext)
 
   const [errors, setErrors] = useState({});
   const [data, setData] = useState({
@@ -84,7 +86,19 @@ const Register = () => {
       formData.append(prop, data[prop]);
     }
 
-    userService.register(formData).then(e => { if(e !== false) alert(e) })
+    userService.register(formData).then(res => {
+      console.log(res)
+
+      if(res === false) {
+        alertContex.setOpen(true)
+        alertContex.setMessage("Username and email have to be unique!!");
+        alertContex.setSeverity("error")
+        console.log(alertContex)
+      }
+      else {
+        navigate("/")
+      }
+     })
   };
 
   return (

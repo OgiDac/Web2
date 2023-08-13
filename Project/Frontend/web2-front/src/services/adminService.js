@@ -56,4 +56,15 @@ const postVerifyUser = async(data) => {
     }
 }
 
-export default {getVerifiedUsers, getWaitingUsers, getDeclinedUsers, getBuyers, postVerifyUser};
+const getOrders = async() => {
+    try {
+        const res = await api.get('admin/orders');
+        return res.data ? res.data.map(o => new OrderModel(o)) : [];
+    }
+    catch(e) {
+        alert(e.response.data.Exception);
+        return [];
+    }
+}
+
+export default {getVerifiedUsers, getWaitingUsers, getDeclinedUsers, getBuyers, postVerifyUser, getOrders};

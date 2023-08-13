@@ -4,6 +4,8 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "./contexts/AuthContext";
+import { CartContextProvider } from "./contexts/CartContext";
+import { AlertContextProvider } from "./contexts/AlertContext";
 // import { CartContextProvider } from "./contexts/cart-context";
 // import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -12,11 +14,14 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       {/* <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}> */}
-        {/* <CartContextProvider> */}
-          <AuthContextProvider> 
+      <AlertContextProvider>
+        <CartContextProvider>
+          <AuthContextProvider>
             <App />
           </AuthContextProvider>
-        {/*</CartContextProvider> */}
+        </CartContextProvider>
+      </AlertContextProvider>
+
       {/* </GoogleOAuthProvider> */}
     </BrowserRouter>
   </React.StrictMode>

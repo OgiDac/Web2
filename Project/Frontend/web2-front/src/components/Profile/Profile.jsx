@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import userService from "../../services/userService";
 import classes from "./Profile.module.css";
 import { useNavigate } from "react-router-dom";
 import { convertImage } from "../../helpers/helpers";
-
+import { Alert } from "@mui/material";
+import AlertContext from "../../contexts/AlertContext";
 
 const Profile = () => {
+  const alertContex = useContext(AlertContext)
   const navigate = useNavigate();
   const [data, setData] = useState({
     username: "",
@@ -84,10 +86,13 @@ const Profile = () => {
       formData.append(prop, data[prop]);
     }
     console.log(formData)
-
     userService
       .setUser(formData)
-      .then((res) => alert("Successfully changed!"))
+      .then((res) => {
+        alertContex.setOpen(true)
+        alertContex.setMessage("Successfully changed!");
+        alertContex.setSeverity("success")
+      })
       .catch((e) => {
         console.log(e);
         return;

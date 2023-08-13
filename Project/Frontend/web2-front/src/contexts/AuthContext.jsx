@@ -3,12 +3,14 @@ import jwtDecode from "jwt-decode";
 import {useNavigate} from 'react-router-dom'
 import axios from "axios";
 import api from "../api/api";
+import AlertContext from "../contexts/AlertContext";
 
 const AuthContext = createContext();
 
 export const AuthContextProvider = (props) => {
     const [token, setToken] = useState(null);
     const navigate = useNavigate();
+    const alertContex = useContext(AlertContext)
 
     useEffect(() => {
         setToken(localStorage.getItem("token"));
@@ -25,7 +27,10 @@ export const AuthContextProvider = (props) => {
             localStorage.setItem("token", result.data);
             navigate("home");
         } catch(e) {
-            alert(e.message);
+            alertContex.setOpen(true)
+            alertContex.setMessage(e.response.data.Exception);
+            alertContex.setSeverity("error")
+            console.log(e.response.data.Exception);
         }
     };
 
