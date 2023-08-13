@@ -22,5 +22,13 @@ namespace Web2.Controllers
             await _authService.Register(registerDTO);
             return Ok();
         }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDTO loginDTO)
+        {
+            var token = await _authService.Login(loginDTO);
+            return Ok(token);
+        }
     }
 }

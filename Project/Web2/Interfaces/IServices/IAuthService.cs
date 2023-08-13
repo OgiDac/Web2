@@ -5,5 +5,7 @@ namespace Web2.Interfaces.IServices
     public interface IAuthService
     {
         public Task Register(RegisterDTO registerDTO);
+
+        public Task<string> Login(LoginDTO loginDTO);
     }
 }

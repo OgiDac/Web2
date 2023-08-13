@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-// import { AuthContextProvider } from "./contexts/auth-context";
+import { AuthContextProvider } from "./contexts/AuthContext";
 // import { CartContextProvider } from "./contexts/cart-context";
 // import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -12,11 +12,11 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       {/* <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}> */}
-        {/* <CartContextProvider>
-          <AuthContextProvider> */}
+        {/* <CartContextProvider> */}
+          <AuthContextProvider> 
             <App />
-          {/* </AuthContextProvider>
-        </CartContextProvider> */}
+          </AuthContextProvider>
+        {/*</CartContextProvider> */}
       {/* </GoogleOAuthProvider> */}
     </BrowserRouter>
   </React.StrictMode>

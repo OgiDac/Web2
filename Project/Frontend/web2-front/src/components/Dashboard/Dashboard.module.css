@@ -1,0 +1,13 @@
+.dashboard {
+    display: flex;
+  }
+  
+  .but {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .but > * {
+    width: 150px;
+    height: 120px;
+  }

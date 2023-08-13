@@ -1,8 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Web2.DTOs;
 using Web2.Interfaces;
 using Web2.Interfaces.IServices;
 using Web2.Models;
+using BC = BCrypt.Net;
 
 namespace Web2.Services
 {
@@ -27,6 +32,46 @@ namespace Web2.Services
             var user = _mapper.Map<User>(registerDTO);
             await _unitOfWork.Users.Insert(user);
             await _unitOfWork.Save();
+        }
+
+        private string GetToken(User user)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, user.Username!),
+                new Claim(ClaimTypes.Role, user.Type.ToString()),
+                new Claim("Id", user.Id.ToString()),
+                new Claim("Email", user.Email!),
+            };
+            var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: signIn);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task<string> Login(LoginDTO loginDTO)
+        {
+            var user = await _unitOfWork.Users.Get(x => x.Email == loginDTO.Email);
+            if (user == null)
+                throw new Exception($"Incorrect email. Try again.");
+
+            if (!BC.BCrypt.Verify(loginDTO.Password, user.Password))
+                throw new Exception("Invalid password");
+
+            if (user.Type == UserType.Seller)
+            {
+                if (user.VerificationStatus == VerificationStatus.Waiting)
+                    throw new Exception("You are not verified. Wait to be verified by administrators.");
+                if (user.VerificationStatus == VerificationStatus.Declined)
+                    throw new Exception("You were declined by administrators. Contact to see why.");
+            }
+
+            return GetToken(user);
         }
     }
 }
