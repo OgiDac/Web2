@@ -6,14 +6,13 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { CartContextProvider } from "./contexts/CartContext";
 import { AlertContextProvider } from "./contexts/AlertContext";
-// import { CartContextProvider } from "./contexts/cart-context";
-// import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}> */}
+      <GoogleOAuthProvider clientId={'553762030277-g4405g2rj6kbug1bkpb2kd6fdpg5hmlh.apps.googleusercontent.com'}>
       <AlertContextProvider>
         <CartContextProvider>
           <AuthContextProvider>
@@ -22,7 +21,7 @@ root.render(
         </CartContextProvider>
       </AlertContextProvider>
 
-      {/* </GoogleOAuthProvider> */}
+      </GoogleOAuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

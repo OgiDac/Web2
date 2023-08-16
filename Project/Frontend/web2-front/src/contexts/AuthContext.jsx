@@ -73,7 +73,9 @@ export const AuthContextProvider = (props) => {
             localStorage.setItem('token', res.data);
             navigate('/home');
         } catch (e){
-            alert(e.response.data.Exception);
+            alertContex.setOpen(true)
+            alertContex.setMessage(e.response.data.Exception);
+            alertContex.setSeverity("error")
         }
     }
 

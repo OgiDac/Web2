@@ -58,6 +58,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<DbContext, StoreDbContext>();
 builder.Services.AddScoped<ExceptionMiddleware>();
+builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IAdminService, AdminService>();

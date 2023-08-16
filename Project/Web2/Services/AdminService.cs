@@ -10,11 +10,13 @@ namespace Web2.Services
     {
         private IUnitOfWork _unitOfWork;
         private IMapper _mapper;
+        private IMailService _mailService;
 
-        public AdminService(IUnitOfWork unitOfWork, IMapper mapper)
+        public AdminService(IUnitOfWork unitOfWork, IMapper mapper, IMailService mailService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _mailService = mailService;
         }
 
         public async Task<List<OrderDTO>> GetAllOrders()
@@ -59,8 +61,8 @@ namespace Web2.Services
             user.VerificationStatus = verifyDTO.VerificationStatus;
             _unitOfWork.Users.Update(user);
 
-            //string message = user.VerificationStatus == VerificationStatus.Accepted ? $"You have been verified.\r\nYou can now sell." : "Your verification has been denied.\r\nPlease contact administrators.";
-            //_ = Task.Run(async () => await _mailService.SendEmail("Verification status", message, user.Email!));
+            string message = user.VerificationStatus == VerificationStatus.Accepted ? $"You have been verified.\r\nYou can now sell." : "Your verification has been denied.\r\nPlease contact administrators.";
+            _ = Task.Run(async () => await _mailService.SendEmail("Verification status", message, user.Email!));
             await _unitOfWork.Save();
         }
     }

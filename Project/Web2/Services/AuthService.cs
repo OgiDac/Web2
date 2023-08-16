@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Google.Apis.Auth;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -82,5 +83,40 @@ namespace Web2.Services
 
             return GetToken(user);
         }
+        public async Task<string> GoogleSignIn(TokenDTO token)
+        {
+            var str = _configuration["Google:ClientID"]!;
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string>() { _configuration["Google:ClientID"]! }
+            };
+
+            var data = await GoogleJsonWebSignature.ValidateAsync(token.Token, settings);
+
+            var user = await _unitOfWork.Users.Get(x => x.Email == data.Email);
+            if (user != null)
+                return GetToken(user);
+
+            user = new User
+            {
+                Email = data.Email,
+                FullName = $"{data.GivenName} {data.FamilyName}",
+                Birthday = DateTime.Now,
+                Address = $"No address",
+                Password = BC.BCrypt.HashPassword("123"),
+                VerificationStatus = VerificationStatus.Waiting,
+                Type = UserType.Buyer,
+                Username = data.GivenName + (new Random().Next() / 100000).ToString(),
+            };
+
+            if (data.Picture != null)
+                Convert.TryFromBase64String(data.Picture, user.Image, out int b);
+
+            await _unitOfWork.Users.Insert(user);
+            await _unitOfWork.Save();
+
+            return GetToken(user);
+        }
+
     }
 }
