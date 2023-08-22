@@ -75,7 +75,6 @@ const Orders = ({ orders, title, updateOrders }) => {
                 color: "white",
                 marginTop: "10px",
               }}
-              }}
             >
               {!countdowns[index] &&
                 status(o) === "In delivery" &&
