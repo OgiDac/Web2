@@ -71,9 +71,10 @@ const Orders = ({ orders, title, updateOrders }) => {
               sx={{
                 minWidth: 300,
                 minHeight: 410,
-                background: "gray",
+                background: "#282c34",
                 color: "white",
                 marginTop: "10px",
+              }}
               }}
             >
               {!countdowns[index] &&

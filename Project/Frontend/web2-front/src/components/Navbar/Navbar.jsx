@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import classes from "./Navbar.module.css";
@@ -9,17 +9,19 @@ const Navbar = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     context.onLogout();
-  }
+  };
 
   return (
     <nav className={classes.navbar}>
-      <ul>
+      <ul className={classes.navList}>
         {context.token && (
-          <li>
-            <Link to="/home">Home</Link>
+          <li className={classes.navItem}>
+            <Link to="/home" className={classes.link}>
+              Home
+            </Link>
           </li>
         )}
-        <li>
+        <li className={classes.navItem}>
           {context.token ? (
             <Link to="/profile" className={classes.link}>
               Profile
@@ -30,9 +32,9 @@ const Navbar = () => {
             </Link>
           )}
         </li>
-        <li>
+        <li className={classes.navItem}>
           {context.token ? (
-            <button onClick={handleLogout} className={classes.button}>
+            <button onClick={handleLogout} className={classes.logoutButton}>
               Logout
             </button>
           ) : (

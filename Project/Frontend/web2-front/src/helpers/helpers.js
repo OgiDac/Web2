@@ -6,6 +6,8 @@ export const tableColumns = (key, item) => {
       return <img className={classes.image} alt="Profile pic" width={40} height={20} src={convertImage(item[key])} />;
     case "birthday":
       return dateToString(item[key]);
+    case "type":
+      return item[key] === 0 ? 'Admin' : item[key] === 1 ? 'Seller' : 'Buyer'
     default:
       return item[key];
   }
