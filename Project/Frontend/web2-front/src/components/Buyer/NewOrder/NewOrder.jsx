@@ -66,7 +66,7 @@ const NewOrder = () => {
                           alt="No pic"
                           sx={{ height: 150, width: "100%", objectFit: "contain" }}
                           image={p.image && convertImage(p.image)} />
-                      <CardContent>
+                      <CardContent sx={{maxHeight: '130px', overflowY: 'auto'}}>
                           <Typography sx={{ fontSize: 14, flexWrap: "wrap" }}>
                               Seller: {p.seller.fullName}
                           </Typography>

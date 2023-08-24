@@ -93,9 +93,11 @@ const Register = () => {
         alertContex.setOpen(true)
         alertContex.setMessage("Username and email have to be unique!!");
         alertContex.setSeverity("error")
-        console.log(alertContex)
       }
       else {
+        alertContex.setOpen(true)
+        alertContex.setMessage("Account registered");
+        alertContex.setSeverity("success")
         navigate("/")
       }
      })
@@ -155,7 +157,7 @@ const Register = () => {
             type="date"
             name="birthday"
             min="1900-01-01"
-            max={`${new Date().getFullYear() - 18}-01-01`}
+            max={`${new Date().getFullYear()}${new Date().getMonth()}${new Date().getDay()}`}
             value={data.birthday}
             onChange={handleChange}
             className={classes.input}

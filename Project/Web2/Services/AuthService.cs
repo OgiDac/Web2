@@ -27,11 +27,15 @@ namespace Web2.Services
 
         public async Task Register(RegisterDTO registerDTO)
         {
-            if(registerDTO.Type == UserType.Administrator)
+            if (registerDTO.Type == UserType.Administrator)
             {
                 throw new Exception("Ne moze admin");
             }
             var user = _mapper.Map<User>(registerDTO);
+            if (user.Type == UserType.Buyer)
+            {
+                user.VerificationStatus = VerificationStatus.Accepted;
+            }
             if (registerDTO.ImageFile != null)
             {
                 using (var ms = new MemoryStream())
